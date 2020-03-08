@@ -1,6 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-import { Input, InputNumber, Form, Button } from 'antd';
+import {
+  Input,
+  InputNumber,
+  Form,
+  Button,
+  Radio,
+  Select,
+  DatePicker
+} from 'antd';
 
 const layout = {
   labelCol: { span: 8 },
@@ -57,6 +65,47 @@ const ExpenseForm = () => {
         </Button>
       </Form.Item>
     </Form>
+  );
+};
+
+export const FormSizeDemo = () => {
+  const [componentSize, setComponentSize] = useState('large');
+
+  return (
+    <div>
+      <Form
+        labelCol={{ span: 4 }}
+        wrapperCol={{ span: 14 }}
+        layout="horizontal"
+        initialValues={{ size: componentSize }}
+        size="large"
+      >
+        <Form.Item label="Form Size" name="size">
+          <Radio.Group>
+            <Radio.Button value="small">Small</Radio.Button>
+            <Radio.Button value="middle">Middle</Radio.Button>
+            <Radio.Button value="large">Large</Radio.Button>
+          </Radio.Group>
+        </Form.Item>
+        <Form.Item label="Input">
+          <Input />
+        </Form.Item>
+        <Form.Item label="Select">
+          <Select>
+            <Select.Option value="demo">Demo</Select.Option>
+          </Select>
+        </Form.Item>
+        <Form.Item label="DatePicker">
+          <DatePicker />
+        </Form.Item>
+        <Form.Item label="InputNumber">
+          <InputNumber />
+        </Form.Item>
+        <Form.Item label="Button">
+          <Button>Button</Button>
+        </Form.Item>
+      </Form>
+    </div>
   );
 };
 

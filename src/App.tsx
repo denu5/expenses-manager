@@ -4,9 +4,9 @@ import './App.css';
 import { Layout } from 'antd';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
-import Create from './screens/Create';
-import Overview from './screens/Overview';
-import Detail from './screens/Detail';
+import Create from './features/Create';
+import Overview from './features/Overview';
+import Detail from './features/Detail';
 
 function App() {
   return (
@@ -23,6 +23,7 @@ function App() {
             <Route path="/detail/:id">
               <Detail />
             </Route>
+            <Route path="*">{/* TODO <NoMatch /> */}</Route>
           </Switch>
         </Layout.Content>
         <Layout.Footer style={{ textAlign: 'center' }}>
