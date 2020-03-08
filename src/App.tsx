@@ -1,29 +1,35 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 
-import Button from 'antd/es/button';
+import { Layout } from 'antd';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+
+import Create from './screens/Create';
+import Overview from './screens/Overview';
+import Detail from './screens/Detail';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-
-        <Button type="primary">Button</Button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Layout className="layout">
+        <Layout.Content style={{ padding: '0 50px' }}>
+          <Switch>
+            <Route exact path="/">
+              <Overview />
+            </Route>
+            <Route path="/create">
+              <Create />
+            </Route>
+            <Route path="/detail/:id">
+              <Detail />
+            </Route>
+          </Switch>
+        </Layout.Content>
+        <Layout.Footer style={{ textAlign: 'center' }}>
+          VT Expense ©2020 Created by R. Denus
+        </Layout.Footer>
+      </Layout>
+    </Router>
   );
 }
 
