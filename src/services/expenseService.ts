@@ -1,74 +1,76 @@
 import axios from 'axios';
 import { Expense } from '../model/expenses';
 
-import parseLink, { Links } from 'parse-link-header';
 import { Currency } from '../constants/currencies';
 
-const isLastPage = (pageLinks: Links) => {
-  return (
-    Object.keys(pageLinks).length === 2 && pageLinks.first && pageLinks.prev
-  );
-};
+const apiUrl = `//localhost:4000/expenses`;
 
-export interface ExpensesListResult {
-  // pageLinks: Links | null
-  pageCount: number;
-  totalCount: number;
-  expenses: Expense[];
+interface GetExpensesParams {
+  _sort: string;
+  _order: 'asc' | 'desc';
+  currency?: Currency;
 }
-
 export async function getExpenses(
-  page = 1,
-  limit = 25,
   currency: Currency | null
-): Promise<ExpensesListResult> {
+): Promise<Expense[]> {
   const url = `//localhost:4000/expenses`;
 
-  const params = {
-    _page: page,
-    _limit: limit,
+  const params: GetExpensesParams = {
     _sort: 'date',
-    _order: 'desc',
-    currency
+    _order: 'desc'
   };
+
+  if (currency) {
+    params.currency = currency;
+  }
 
   try {
     const res = await axios.get<Expense[]>(url, {
       params
     });
-
-    const { headers } = res;
-
-    const totalCount = parseInt(headers['x-total-count']);
-    const pageCount = Math.ceil(totalCount / limit);
-
-    // const pageLinks = parseLink(res.headers.link);
-
-    return {
-      expenses: res.data,
-      pageCount,
-      totalCount
-    };
+    const { data } = res;
+    return data;
   } catch (err) {
     throw err;
   }
 }
 
-// export async function getRepoDetails(org: string, repo: string) {
-//   const url = `https://api.github.com/repos/${org}/${repo}`;
+export async function getExpense(id: number): Promise<Expense> {
+  const url = `${apiUrl}/${id}`;
 
-//   const { data } = await axios.get<RepoDetails>(url);
-//   return data;
-// }
+  const { data } = await axios.get<Expense>(url);
+  return data;
+}
 
-// export async function getIssue(org: string, repo: string, number: number) {
-//   const url = `https://api.github.com/repos/${org}/${repo}/issues/${number}`;
+export async function createExpense(expense: Expense): Promise<Expense> {
+  const url = `${apiUrl}`;
 
-//   const { data } = await axios.get<Issue>(url);
-//   return data;
-// }
+  try {
+    const { data } = await axios.post<Expense>(url, { ...expense });
+    return data;
+  } catch (err) {
+    throw err;
+  }
+}
 
-// export async function getComments(url: string) {
-//   const { data } = await axios.get<Comment[]>(url);
-//   return data;
-// }
+export async function updateExpense(expense: Expense): Promise<Expense> {
+  const url = `${apiUrl}`;
+
+  try {
+    const { data } = await axios.post<Expense>(url, { ...expense });
+    return data;
+  } catch (err) {
+    throw err;
+  }
+}
+
+export async function deleteExpense(id: number): Promise<Boolean> {
+  const url = `${apiUrl}/${id}`;
+
+  try {
+    const res = await axios.delete<void>(url);
+    return true;
+  } catch (err) {
+    throw err;
+  }
+}

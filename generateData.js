@@ -6,7 +6,7 @@ let generateExpenses = () => {
   for (let id = 0; id < 300; id++) {
     expenses.push({
       id: id,
-      date: faker.date.between(
+      timestamp: faker.date.between(
         '2018-02-20T07:00:00.000Z',
         '2020-02-20T07:00:00.000Z'
       ),

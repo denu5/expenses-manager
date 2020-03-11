@@ -1,21 +1,27 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   PageHeader,
   Statistic,
   List,
-  Avatar,
   Radio,
   Row,
   Col,
   Button,
-  Pagination
+  Avatar,
+  Card,
+  Affix
 } from 'antd';
-import { Link } from 'react-router-dom';
 import { useStoreState, useStoreActions } from '../store/hooks';
+
+import { UserOutlined } from '@ant-design/icons';
 
 import CurrencyFormat from 'react-currency-formatter';
 import { RadioChangeEvent } from 'antd/lib/radio';
 import { CURRENCIES, Currency } from '../constants/currencies';
+import CreateModal from './CreateModal';
+import DetailModal from './DetailModal';
+
+import { PlusOutlined } from '@ant-design/icons';
 
 function Overview() {
   const {
@@ -23,33 +29,44 @@ function Overview() {
     totalCount,
     totalSum,
     filterCurrency,
-    pageSize,
-    currentPage,
     isLoading
-  } = useStoreState(state => state.expenses);
+  } = useStoreState(state => state.expensesList);
 
-  const { setFilterCurrency, fetchExpenses, setCurrentPage } = useStoreActions(
-    state => state.expenses
+  const { setFilterCurrency, fetchExpenses } = useStoreActions(
+    state => state.expensesList
   );
+
+  const [isCreateModalVisible, setCreateModalVisible] = useState(false);
+  const [detailId, setDetailId] = useState<number>();
 
   const filterCurrencyChange = (event: RadioChangeEvent) => {
     const value: Currency = event.target.value;
     setFilterCurrency(value);
   };
 
+  const afterDetailModalClose = () => {
+    setDetailId(undefined);
+  };
+
   useEffect(() => {
-    fetchExpenses();
+    fetchExpenses().then(() => {
+      // redirect on success
+    });
   }, [fetchExpenses]);
 
   return (
-    <div>
+    <>
       <PageHeader
-        title="Overview"
+        title="Expenses Manager VT"
         ghost={false}
         extra={[
-          <Link key="1" to="/create">
-            <Button type="primary">Add new expense</Button>
-          </Link>
+          <Button
+            key="1"
+            type="primary"
+            onClick={() => setCreateModalVisible(true)}
+          >
+            <PlusOutlined /> Add new expense
+          </Button>
         ]}
       ></PageHeader>
 
@@ -73,39 +90,37 @@ function Overview() {
           ))}
         </Radio.Group>
       </Row>
-      {totalCount > 0 && (
-        <Pagination
-          total={totalCount}
-          showTotal={(total, range) =>
-            `${range[0]}-${range[1]} of ${total} items`
-          }
-          onChange={setCurrentPage}
-          pageSize={pageSize}
-          current={currentPage}
-        />
-      )}
 
-      <List
-        itemLayout="horizontal"
-        dataSource={expenses}
-        rowKey={i => i.date}
-        loading={isLoading}
-        renderItem={item => (
-          <Link to={`detail/${item.id}`}>
-            <List.Item>
+      <Card>
+        <List
+          itemLayout="horizontal"
+          dataSource={expenses}
+          loading={isLoading}
+          renderItem={item => (
+            <List.Item onClick={() => setDetailId(item.id)}>
               <List.Item.Meta
-                // avatar={
-                //   <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
-                // }
+                avatar={<Avatar size="large" icon={<UserOutlined />} />}
                 title={item.recipient}
                 description={item.category}
               />
               <CurrencyFormat currency={item.currency} quantity={item.amount} />
             </List.Item>
-          </Link>
-        )}
-      />
-    </div>
+          )}
+        />
+      </Card>
+
+      {isCreateModalVisible && (
+        <CreateModal
+          afterClose={() => {
+            setCreateModalVisible(false);
+          }}
+        />
+      )}
+
+      {detailId && (
+        <DetailModal id={detailId} afterClose={afterDetailModalClose} />
+      )}
+    </>
   );
 }
 

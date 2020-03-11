@@ -11,11 +11,10 @@ import {
 import { Injections } from '../store';
 import { DEFAULT_CURRENCY, Currency } from '../constants/currencies';
 import { ExpenseCategory } from '../constants/expenseTypes';
-import { ExpensesListResult } from '../services/expenseService';
 
 export interface Expense {
   id?: number;
-  date: string;
+  timestamp: string;
   amount: number;
   recipient: string;
   currency: Currency;
@@ -25,9 +24,6 @@ export interface Expense {
 interface ExpensesState {
   expenses: Expense[];
   filterCurrency: Currency | null;
-  currentPage: number;
-  pageSize: number;
-  pageCount: number;
   totalCount: number;
   isLoading: boolean;
   error: string | null;
@@ -36,10 +32,9 @@ interface ExpensesState {
 export interface ExpensesModel extends ExpensesState {
   totalSum: Computed<ExpensesModel, number>;
   setFilterCurrency: Action<ExpensesModel, Currency>;
-  setCurrentPage: Action<ExpensesModel, number>;
-  onSetCurrentPage: ThunkOn<ExpensesModel>;
+  onSetFilters: ThunkOn<ExpensesModel>;
   getExpensesStart: Action<ExpensesModel>;
-  getExpensesSuccess: Action<ExpensesModel, ExpensesListResult>;
+  getExpensesSuccess: Action<ExpensesModel, Expense[]>;
   getExpensesFailure: Action<ExpensesModel, string>;
   fetchExpenses: Thunk<ExpensesModel, void, Injections>;
 }
@@ -47,9 +42,6 @@ export interface ExpensesModel extends ExpensesState {
 const initialState: ExpensesState = {
   expenses: [],
   filterCurrency: DEFAULT_CURRENCY,
-  pageCount: 0,
-  currentPage: 1,
-  pageSize: 25,
   totalCount: 0,
   isLoading: false,
   error: null
@@ -63,21 +55,16 @@ const expensesModel: ExpensesModel = {
   setFilterCurrency: action((state, payload) => {
     state.filterCurrency = payload;
   }),
-  setCurrentPage: action((state, payload) => {
-    state.currentPage = payload;
-  }),
   getExpensesStart: action(startLoading),
   getExpensesSuccess: action((state, payload) => {
-    const { expenses, pageCount, totalCount } = payload;
-    state.expenses = expenses;
-    state.pageCount = pageCount;
-    state.totalCount = totalCount;
+    state.expenses = payload;
+    state.totalCount = payload.length;
     state.isLoading = false;
     state.error = null;
   }),
   getExpensesFailure: action(loadingFailed),
-  onSetCurrentPage: thunkOn(
-    actions => actions.setCurrentPage || actions.setFilterCurrency,
+  onSetFilters: thunkOn(
+    actions => actions.setFilterCurrency,
     actions => {
       actions.fetchExpenses();
     }
@@ -86,12 +73,8 @@ const expensesModel: ExpensesModel = {
     const { expenseService } = injections;
     try {
       actions.getExpensesStart();
-      const { currentPage, pageSize, filterCurrency } = getState();
-      const expenses = await expenseService.getExpenses(
-        currentPage,
-        pageSize,
-        filterCurrency
-      );
+      const { filterCurrency } = getState();
+      const expenses = await expenseService.getExpenses(filterCurrency);
       actions.getExpensesSuccess(expenses);
     } catch (err) {
       actions.getExpensesFailure(err.toString());
