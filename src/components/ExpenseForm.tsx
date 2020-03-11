@@ -8,7 +8,7 @@ import { Currency } from '../constants/currencies';
 
 interface ExpenseFormData {
   date: Moment;
-  time: any;
+  time: Moment;
   amount: number;
   recipient: string;
   currency: Currency;
@@ -19,13 +19,12 @@ interface ExpenseFormData {
 const dateFormat = 'DD-MM-YYYY';
 const timeFormat = 'HH:mm';
 const unixTimeFormat = 'X';
-const isoTimeFormat = 'YYYY-MM-DD[T00:00:00.000Z]';
 
 export const ExpenseForm = ({ onSubmit, formRef, expense }: any) => {
-  const formData = expense ? mapExpenseToFormData(expense) : {};
+  const formData = expense ? fromExpenseToFormData(expense) : {};
 
   const onFinish = (formData: any) => {
-    onSubmit(mapFormDataToExpense(formData));
+    onSubmit(fromFormDataToExpense(formData));
   };
 
   return (
@@ -96,8 +95,23 @@ export const ExpenseForm = ({ onSubmit, formRef, expense }: any) => {
   );
 };
 
-function mapFormDataToExpense(data: ExpenseFormData): BaseExpense {
-  const timestamp = parseInt(data.date.add(data.time).format(unixTimeFormat));
+// TODO move to utils
+
+function addTimeToDate(date: Moment, time: Moment): Moment {
+  return date.set('hour', time.hours()).set('minute', time.minutes());
+}
+
+function momentToUnix(timestamp: Moment): number {
+  return parseInt(timestamp.format(unixTimeFormat));
+}
+
+function unixToMoment(timestamp: number): Moment[] {
+  const ts = moment.unix(timestamp);
+  return [moment(ts, dateFormat), moment(ts, timeFormat)];
+}
+
+function fromFormDataToExpense(data: ExpenseFormData): BaseExpense {
+  const timestamp = momentToUnix(addTimeToDate(data.date, data.time));
 
   return {
     timestamp: timestamp,
@@ -108,16 +122,8 @@ function mapFormDataToExpense(data: ExpenseFormData): BaseExpense {
   };
 }
 
-function mapExpenseToFormData(data: BaseExpense): ExpenseFormData {
-  // TODO create util functions?
-
-  const timestamp = moment.unix(data.timestamp);
-
-  const date = moment(timestamp, dateFormat);
-  console.log(date.format(isoTimeFormat));
-  const time = moment(timestamp, timeFormat);
-
-  console.log(time);
+function fromExpenseToFormData(data: BaseExpense): ExpenseFormData {
+  const [date, time] = unixToMoment(data.timestamp);
 
   return {
     amount: data.amount,
