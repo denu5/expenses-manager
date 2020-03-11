@@ -16,7 +16,7 @@ export async function getExpenses(
   const url = `//localhost:4000/expenses`;
 
   const params: GetExpensesParams = {
-    _sort: 'date',
+    _sort: 'timestamp',
     _order: 'desc'
   };
 

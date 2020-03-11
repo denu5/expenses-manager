@@ -13,7 +13,7 @@ import { DEFAULT_CURRENCY, Currency } from '../constants/currencies';
 import { ExpenseCategory } from '../constants/expenseTypes';
 
 export interface BaseExpense {
-  timestamp: string;
+  timestamp: number;
   amount: number;
   recipient: string;
   currency: Currency;

@@ -18,7 +18,8 @@ interface ExpenseFormData {
 // TODO move to constants`?
 const dateFormat = 'DD-MM-YYYY';
 const timeFormat = 'HH:mm';
-const dbFormat = 'YYYY-MM-DD[T00:00:00.000Z]';
+const unixTimeFormat = 'X';
+const isoTimeFormat = 'YYYY-MM-DD[T00:00:00.000Z]';
 
 export const ExpenseForm = ({ onSubmit, formRef, expense }: any) => {
   const formData = expense ? mapExpenseToFormData(expense) : {};
@@ -96,7 +97,7 @@ export const ExpenseForm = ({ onSubmit, formRef, expense }: any) => {
 };
 
 function mapFormDataToExpense(data: ExpenseFormData): BaseExpense {
-  const timestamp = data.date.add(data.time).format(dbFormat);
+  const timestamp = parseInt(data.date.add(data.time).format(unixTimeFormat));
 
   return {
     timestamp: timestamp,
@@ -109,8 +110,14 @@ function mapFormDataToExpense(data: ExpenseFormData): BaseExpense {
 
 function mapExpenseToFormData(data: BaseExpense): ExpenseFormData {
   // TODO create util functions?
-  const date = moment(data.timestamp, dateFormat);
-  const time = moment(data.timestamp, timeFormat);
+
+  const timestamp = moment.unix(data.timestamp);
+
+  const date = moment(timestamp, dateFormat);
+  console.log(date.format(isoTimeFormat));
+  const time = moment(timestamp, timeFormat);
+
+  console.log(time);
 
   return {
     amount: data.amount,
