@@ -42,12 +42,15 @@ export async function createExpense(expense: Expense): Promise<Expense> {
 }
 
 export async function updateExpense(expense: Expense): Promise<Expense> {
-  const { data } = await httpClient.put<Expense>(`${API.BASE}/${expense.id}`, {
-    ...expense
-  });
+  const { data } = await httpClient.put<Expense>(
+    `${API.EXPENSES}/${expense.id}`,
+    {
+      ...expense
+    }
+  );
   return data;
 }
 
 export async function deleteExpense(id: number): Promise<Boolean> {
-  return await httpClient.delete(`${API.BASE}/${id}`);
+  return await httpClient.delete(`${API.EXPENSES}/${id}`);
 }

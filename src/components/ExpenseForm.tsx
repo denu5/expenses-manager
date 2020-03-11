@@ -9,7 +9,12 @@ import {
   EXPENSE_CATEGORIES
 } from '../shared/constants';
 
-export const ExpenseForm = ({ onSubmit, formRef, expense }: any) => {
+export const ExpenseForm = ({
+  onSubmit,
+  formRef,
+  expense,
+  disabled = false
+}: any) => {
   const formData = expense ? fromExpenseToFormData(expense) : {};
 
   const onFinish = (formData: any) => {
@@ -30,7 +35,7 @@ export const ExpenseForm = ({ onSubmit, formRef, expense }: any) => {
         label="Recepient"
         labelAlign="left"
       >
-        <Input />
+        <Input disabled={disabled} />
       </Form.Item>
 
       <Form.Item
@@ -39,7 +44,7 @@ export const ExpenseForm = ({ onSubmit, formRef, expense }: any) => {
         labelAlign="left"
         rules={[{ required: true, message: 'Category is required' }]}
       >
-        <Select>
+        <Select disabled={disabled}>
           {EXPENSE_CATEGORIES.map(category => (
             <Select.Option key={category} value={category}>
               {category}
@@ -54,7 +59,7 @@ export const ExpenseForm = ({ onSubmit, formRef, expense }: any) => {
         label="Date"
         labelAlign="left"
       >
-        <DatePicker format={DATE_FORMAT} />
+        <DatePicker format={DATE_FORMAT} disabled={disabled} />
       </Form.Item>
       <Form.Item
         name="time"
@@ -62,7 +67,7 @@ export const ExpenseForm = ({ onSubmit, formRef, expense }: any) => {
         label="Time"
         labelAlign="left"
       >
-        <TimePicker format={TIME_FORMAT} />
+        <TimePicker format={TIME_FORMAT} disabled={disabled} />
       </Form.Item>
 
       <Form.Item
@@ -71,7 +76,7 @@ export const ExpenseForm = ({ onSubmit, formRef, expense }: any) => {
         label="Amount"
         labelAlign="left"
       >
-        <InputNumber />
+        <InputNumber disabled={disabled} />
       </Form.Item>
 
       <Form.Item
@@ -80,7 +85,7 @@ export const ExpenseForm = ({ onSubmit, formRef, expense }: any) => {
         labelAlign="left"
         rules={[{ required: true, message: 'Currency is required' }]}
       >
-        <Select>
+        <Select disabled={disabled}>
           {CURRENCIES.map(currency => (
             <Select.Option key={currency} value={currency}>
               {currency}

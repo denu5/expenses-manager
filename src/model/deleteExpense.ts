@@ -24,32 +24,28 @@ const initialState: DeleteExpenseState = {
 
 const deleteExpenseModel: DeleteExpenseModel = {
   ...initialState,
-  deleteExpenseStart: action(startLoading),
+  deleteExpenseStart: action(state => {
+    state.isLoading = true;
+  }),
   deleteExpenseSuccess: action((state, payload) => {
     state.deletedExpense = payload;
     state.isLoading = false;
     state.error = null;
   }),
-  deleteExpenseFailure: action(loadingFailed),
+  deleteExpenseFailure: action((state, payload) => {
+    state.isLoading = false;
+    state.error = payload;
+  }),
   deleteExpense: thunk(async (actions, payload, { injections }) => {
     const { expenseService } = injections;
     try {
       actions.deleteExpenseStart();
-      const deleted = await expenseService.deleteExpense(150);
+      await expenseService.deleteExpense(payload.id);
       actions.deleteExpenseSuccess(payload);
     } catch (err) {
       actions.deleteExpenseFailure(err.toString());
     }
   })
 };
-
-function startLoading(state: DeleteExpenseState) {
-  state.isLoading = true;
-}
-
-function loadingFailed(state: DeleteExpenseState, payload: string) {
-  state.isLoading = false;
-  state.error = payload;
-}
 
 export default deleteExpenseModel;

@@ -15,17 +15,17 @@ export function addTimeToDate(date: Moment, time: Moment): Moment {
   return date.set('hour', time.hours()).set('minute', time.minutes());
 }
 
-export function momentToUnix(timestamp: Moment): number {
+export function fromMomentToUnix(timestamp: Moment): number {
   return parseInt(timestamp.format(UNIX_FORMAT));
 }
 
-export function unixToMoment(timestamp: number): Moment[] {
+export function fromUnixToMoment(timestamp: number): Moment[] {
   const ts = moment.unix(timestamp);
   return [moment(ts, DATE_FORMAT), moment(ts, TIME_FORMAT)];
 }
 
 export function fromFormDataToExpense(data: ExpenseFormData): BaseExpense {
-  const timestamp = momentToUnix(addTimeToDate(data.date, data.time));
+  const timestamp = fromMomentToUnix(addTimeToDate(data.date, data.time));
 
   return {
     timestamp: timestamp,
@@ -37,7 +37,7 @@ export function fromFormDataToExpense(data: ExpenseFormData): BaseExpense {
 }
 
 export function fromExpenseToFormData(data: Expense): ExpenseFormData {
-  const [date, time] = unixToMoment(data.timestamp);
+  const [date, time] = fromUnixToMoment(data.timestamp);
 
   return {
     amount: data.amount,

@@ -49,9 +49,7 @@ function Overview() {
   };
 
   useEffect(() => {
-    fetchExpenses().then(() => {
-      // redirect on success
-    });
+    fetchExpenses();
   }, [fetchExpenses]);
 
   return (
