@@ -1,7 +1,8 @@
-import { Action, action, Thunk, thunk } from 'easy-peasy';
+import { Action, action, Thunk, thunk, ThunkOn, thunkOn } from 'easy-peasy';
 import { Injections } from '../store';
 
 import { Expense } from './expenses';
+import { StoreModel } from '.';
 
 interface CreateExpenseState {
   createdExpense: Expense | null;
@@ -14,6 +15,7 @@ export interface CreateExpenseModel extends CreateExpenseState {
   createExpenseSuccess: Action<CreateExpenseModel, Expense>;
   createExpenseFailure: Action<CreateExpenseModel, string>;
   createExpense: Thunk<CreateExpenseModel, Expense, Injections>;
+  onCreateExpenseSuccess: ThunkOn<CreateExpenseModel, void, StoreModel>;
 }
 
 const initialState: CreateExpenseState = {
@@ -45,7 +47,13 @@ const createExpenseModel: CreateExpenseModel = {
     } catch (err) {
       actions.createExpenseFailure(err.toString());
     }
-  })
+  }),
+  onCreateExpenseSuccess: thunkOn(
+    actions => actions.createExpenseSuccess,
+    (actions, _, { getStoreActions, getState }) => {
+      getStoreActions().expensesList.fetchExpenses();
+    }
+  )
 };
 
 export default createExpenseModel;
