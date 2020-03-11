@@ -5,7 +5,6 @@ import { Expense } from './expenses';
 
 interface ExpenseDetailState {
   expense: Expense | null;
-  isLoadingUpdate: boolean;
   isLoading: boolean;
   error: string | null;
 }
@@ -16,18 +15,12 @@ export interface ExpenseDetailModel extends ExpenseDetailState {
   fetchExpenseFailure: Action<ExpenseDetailModel, string>;
   fetchExpense: Thunk<ExpenseDetailModel, number, Injections>;
 
-  updateExpenseStart: Action<ExpenseDetailModel>;
-  updateExpenseSuccess: Action<ExpenseDetailModel, Expense>;
-  updateExpenseFailure: Action<ExpenseDetailModel, string>;
-  updateExpense: Thunk<ExpenseDetailModel, Expense, Injections>;
-
   reset: Action<ExpenseDetailModel>;
 }
 
 const initialState: ExpenseDetailState = {
   expense: null,
   isLoading: false,
-  isLoadingUpdate: false,
   error: null
 };
 
@@ -55,29 +48,6 @@ const updateExpenseModel: ExpenseDetailModel = {
       actions.fetchExpenseFailure(err.toString());
     }
   }),
-  updateExpenseStart: action(state => {
-    state.isLoadingUpdate = true;
-  }),
-  updateExpenseSuccess: action((state, payload) => {
-    state.expense = payload;
-    state.isLoadingUpdate = false;
-    state.error = null;
-  }),
-  updateExpenseFailure: action((state, payload) => {
-    state.isLoadingUpdate = false;
-    state.error = payload;
-  }),
-  updateExpense: thunk(async (actions, payload, { injections }) => {
-    const { expenseService } = injections;
-    try {
-      actions.updateExpenseStart();
-      const updatedExpense = await expenseService.updateExpense(payload);
-      actions.updateExpenseSuccess(updatedExpense);
-    } catch (err) {
-      actions.updateExpenseFailure(err.toString());
-    }
-  }),
-
   // TODO cancel pending request
   reset: action(_ => ({ ...initialState }))
 };

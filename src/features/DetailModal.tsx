@@ -7,11 +7,17 @@ import { Expense } from '../model/expenses';
 import ExpenseForm from '../components/ExpenseForm';
 
 function DetailModal({ afterClose, id }: any) {
-  const { fetchExpense, reset, updateExpense } = useStoreActions(
-    state => state.expenseDetail
+  const { fetchExpense, reset } = useStoreActions(state => state.expenseDetail);
+
+  const { updateExpense } = useStoreActions(state => state.updateExpense);
+
+  const { isLoading: isUpdateLoading } = useStoreState(
+    state => state.updateExpense
   );
 
-  const { isLoading, expense } = useStoreState(state => state.expenseDetail);
+  const { isLoading: isFetchLoading, expense } = useStoreState(
+    state => state.expenseDetail
+  );
 
   const [form] = Form.useForm();
   const [isVisible, setIsVisible] = useState(true);
@@ -40,11 +46,12 @@ function DetailModal({ afterClose, id }: any) {
     setIsVisible(false);
   };
 
+  // TODO Footer hide while init loading
   return (
     <Modal
       title="Edit"
       visible={isVisible}
-      confirmLoading={isLoading}
+      confirmLoading={isUpdateLoading}
       onOk={handleOk}
       onCancel={handleCancel}
       afterClose={afterClose}
@@ -53,14 +60,13 @@ function DetailModal({ afterClose, id }: any) {
       okText="Save"
       cancelText="Discard"
     >
-      <Spin size="large" tip="Loading Details..." spinning={isLoading}></Spin>
+      <Spin
+        size="large"
+        tip="Loading Details..."
+        spinning={isFetchLoading}
+      ></Spin>
       {expense && (
-        <ExpenseForm
-          onSubmit={onSubmit}
-          isLoading={isLoading}
-          formRef={form}
-          expense={expense}
-        />
+        <ExpenseForm onSubmit={onSubmit} formRef={form} expense={expense} />
       )}
     </Modal>
   );

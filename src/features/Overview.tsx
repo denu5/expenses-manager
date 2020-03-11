@@ -57,7 +57,7 @@ function Overview() {
   return (
     <>
       <PageHeader
-        title="Expenses Manager VT"
+        title="Expenses Manager"
         ghost={false}
         extra={[
           <Button
