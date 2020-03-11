@@ -12,13 +12,16 @@ import { Injections } from '../store';
 import { DEFAULT_CURRENCY, Currency } from '../constants/currencies';
 import { ExpenseCategory } from '../constants/expenseTypes';
 
-export interface Expense {
-  id?: number;
+export interface BaseExpense {
   timestamp: string;
   amount: number;
   recipient: string;
   currency: Currency;
   category: ExpenseCategory;
+}
+
+export interface Expense extends BaseExpense {
+  id: number;
 }
 
 interface ExpensesState {

@@ -30,8 +30,12 @@ function DetailModal({ afterClose, id }: any) {
     };
   }, [id]);
 
-  const onSubmit = (expense: Expense) => {
-    updateExpense(expense).then(() => hide()); // TODO notify error?
+  const onSubmit = (editedExpense: Expense) => {
+    if (expense) {
+      // TODO Footer hide while init loading
+      editedExpense.id = expense.id;
+      updateExpense(editedExpense).then(() => hide()); // TODO notify error?
+    }
   };
 
   const handleOk = () => {

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Input, InputNumber, Form, Select, DatePicker, TimePicker } from 'antd';
-import { Expense } from '../model/expenses';
+import { BaseExpense } from '../model/expenses';
 import moment, { Moment } from 'moment';
 import { ExpenseCategory } from '../constants/expenseTypes';
 import { Currency } from '../constants/currencies';
@@ -16,16 +16,15 @@ interface ExpenseFormData {
 }
 
 // TODO move to constants`?
-const dateFormat = 'YYYY/MM/DD';
+const dateFormat = 'DD-MM-YYYY';
 const timeFormat = 'HH:mm';
 const dbFormat = 'YYYY-MM-DD[T00:00:00.000Z]';
 
 export const ExpenseForm = ({ onSubmit, formRef, expense }: any) => {
-  const formData = expense ? expenseToFormData(expense) : {};
+  const formData = expense ? mapExpenseToFormData(expense) : {};
 
   const onFinish = (formData: any) => {
-    // TODO what to do with id, pass into form or get from expense?
-    onSubmit(formDataToExpense(formData, expense['id']));
+    onSubmit(mapFormDataToExpense(formData));
   };
 
   return (
@@ -96,11 +95,10 @@ export const ExpenseForm = ({ onSubmit, formRef, expense }: any) => {
   );
 };
 
-function formDataToExpense(data: ExpenseFormData, id: number): Expense {
+function mapFormDataToExpense(data: ExpenseFormData): BaseExpense {
   const timestamp = data.date.add(data.time).format(dbFormat);
 
   return {
-    id,
     timestamp: timestamp,
     amount: data.amount,
     recipient: data.recipient,
@@ -109,7 +107,7 @@ function formDataToExpense(data: ExpenseFormData, id: number): Expense {
   };
 }
 
-function expenseToFormData(data: Expense): ExpenseFormData {
+function mapExpenseToFormData(data: BaseExpense): ExpenseFormData {
   // TODO create util functions?
   const date = moment(data.timestamp, dateFormat);
   const time = moment(data.timestamp, timeFormat);
