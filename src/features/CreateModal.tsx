@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Form, Modal } from 'antd';
 
 import { useStoreActions, useStoreState } from '../store/hooks';
-import { Expense } from '../model/expenses';
+import { Expense } from '../model/expensesList';
 
 import ExpenseForm from '../components/ExpenseForm';
 

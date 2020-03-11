@@ -1,5 +1,5 @@
 import moment, { Moment } from 'moment';
-import { Expense, BaseExpense } from '../model/expenses';
+import { Expense, BaseExpense } from '../model/expensesList';
 import { unixTimeFormat, dateFormat, timeFormat } from './constants';
 
 interface ExpenseFormData {

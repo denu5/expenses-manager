@@ -23,7 +23,7 @@ export interface Expense extends BaseExpense {
   id: number;
 }
 
-interface ExpensesState {
+interface ExpensesListState {
   expenses: Expense[];
   filterCurrency: string | null;
   totalCount: number;
@@ -31,17 +31,17 @@ interface ExpensesState {
   error: string | null;
 }
 
-export interface ExpensesModel extends ExpensesState {
-  totalSum: Computed<ExpensesModel, number>;
-  setFilterCurrency: Action<ExpensesModel, string>;
-  onSetFilters: ThunkOn<ExpensesModel>;
-  getExpensesStart: Action<ExpensesModel>;
-  getExpensesSuccess: Action<ExpensesModel, Expense[]>;
-  getExpensesFailure: Action<ExpensesModel, string>;
-  fetchExpenses: Thunk<ExpensesModel, void, Injections>;
+export interface ExpensesListModel extends ExpensesListState {
+  totalSum: Computed<ExpensesListModel, number>;
+  setFilterCurrency: Action<ExpensesListModel, string>;
+  onSetFilters: ThunkOn<ExpensesListModel>;
+  getExpensesStart: Action<ExpensesListModel>;
+  getExpensesSuccess: Action<ExpensesListModel, Expense[]>;
+  getExpensesFailure: Action<ExpensesListModel, string>;
+  fetchExpenses: Thunk<ExpensesListModel, void, Injections>;
 }
 
-const initialState: ExpensesState = {
+const initialState: ExpensesListState = {
   expenses: [],
   filterCurrency: DEFAULT_CURRENCY,
   totalCount: 0,
@@ -49,7 +49,7 @@ const initialState: ExpensesState = {
   error: null
 };
 
-const expensesModel: ExpensesModel = {
+const expensesListModel: ExpensesListModel = {
   ...initialState,
   totalSum: computed(state => {
     return state.expenses.reduce((acc, item) => acc + item.amount, 0);
@@ -57,14 +57,19 @@ const expensesModel: ExpensesModel = {
   setFilterCurrency: action((state, payload) => {
     state.filterCurrency = payload;
   }),
-  getExpensesStart: action(startLoading),
+  getExpensesStart: action(state => {
+    state.isLoading = true;
+  }),
   getExpensesSuccess: action((state, payload) => {
     state.expenses = payload;
     state.totalCount = payload.length;
     state.isLoading = false;
     state.error = null;
   }),
-  getExpensesFailure: action(loadingFailed),
+  getExpensesFailure: action((state, payload) => {
+    state.isLoading = false;
+    state.error = payload;
+  }),
   onSetFilters: thunkOn(
     actions => actions.setFilterCurrency,
     actions => {
@@ -84,13 +89,4 @@ const expensesModel: ExpensesModel = {
   })
 };
 
-function startLoading(state: ExpensesState) {
-  state.isLoading = true;
-}
-
-function loadingFailed(state: ExpensesState, payload: string) {
-  state.isLoading = false;
-  state.error = payload;
-}
-
-export default expensesModel;
+export default expensesListModel;

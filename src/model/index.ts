@@ -1,12 +1,12 @@
-import expensesModel, { ExpensesModel } from './expenses';
+import expensesListModel, { ExpensesListModel } from './expensesList';
+import expenseDetailModel, { ExpenseDetailModel } from './expenseDetail';
+
 import createExpenseModel, { CreateExpenseModel } from './createExpense';
 import deleteExpenseModel, { DeleteExpenseModel } from './deleteExpense';
 import updateExpenseModel, { UpdateExpenseModel } from './updateExpense';
 
-import expenseDetailModel, { ExpenseDetailModel } from './expenseDetail';
-
 export interface StoreModel {
-  expensesList: ExpensesModel;
+  expensesList: ExpensesListModel;
   expenseDetail: ExpenseDetailModel;
 
   createExpense: CreateExpenseModel;
@@ -15,7 +15,7 @@ export interface StoreModel {
 }
 
 const storeModel: StoreModel = {
-  expensesList: expensesModel,
+  expensesList: expensesListModel,
   expenseDetail: expenseDetailModel,
   createExpense: createExpenseModel,
   deleteExpense: deleteExpenseModel,

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Expense } from '../model/expenses';
+import { Expense } from '../model/expensesList';
 import { API } from '../shared/constants';
 
 const httpClient = axios.create({ baseURL: API.BASE });
