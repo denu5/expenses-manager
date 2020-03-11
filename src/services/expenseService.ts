@@ -35,6 +35,7 @@ export async function getExpenses(
   }
 }
 
+// TODO cancel pending requests https://stackoverflow.com/questions/49233860/how-to-cancel-previous-axios-with-redux-in-react
 export async function getExpense(id: number): Promise<Expense> {
   const url = `${apiUrl}/${id}`;
 
@@ -54,10 +55,10 @@ export async function createExpense(expense: Expense): Promise<Expense> {
 }
 
 export async function updateExpense(expense: Expense): Promise<Expense> {
-  const url = `${apiUrl}`;
+  const url = `${apiUrl}/${expense.id}`;
 
   try {
-    const { data } = await axios.post<Expense>(url, { ...expense });
+    const { data } = await axios.put<Expense>(url, { ...expense });
     return data;
   } catch (err) {
     throw err;

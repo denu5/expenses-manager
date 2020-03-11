@@ -7,8 +7,9 @@ import { Expense } from '../model/expenses';
 import ExpenseForm from '../components/ExpenseForm';
 
 function DetailModal({ afterClose, id }: any) {
-  const { createExpense } = useStoreActions(state => state.createExpense);
-  const { fetchExpense, reset } = useStoreActions(state => state.expenseDetail);
+  const { fetchExpense, reset, updateExpense } = useStoreActions(
+    state => state.expenseDetail
+  );
 
   const { isLoading, expense } = useStoreState(state => state.expenseDetail);
 
@@ -24,7 +25,7 @@ function DetailModal({ afterClose, id }: any) {
   }, [id]);
 
   const onSubmit = (expense: Expense) => {
-    createExpense(expense).then(() => hide()); // TODO notify error?
+    updateExpense(expense).then(() => hide()); // TODO notify error?
   };
 
   const handleOk = () => {

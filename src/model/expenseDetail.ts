@@ -77,6 +77,8 @@ const updateExpenseModel: ExpenseDetailModel = {
       actions.updateExpenseFailure(err.toString());
     }
   }),
+
+  // TODO cancel pending request
   reset: action(_ => ({ ...initialState }))
 };
 
