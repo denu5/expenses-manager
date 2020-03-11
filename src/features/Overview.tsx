@@ -17,11 +17,11 @@ import { UserOutlined } from '@ant-design/icons';
 
 import CurrencyFormat from 'react-currency-formatter';
 import { RadioChangeEvent } from 'antd/lib/radio';
-import { CURRENCIES, Currency } from '../constants/currencies';
 import CreateModal from './CreateModal';
 import DetailModal from './DetailModal';
 
 import { PlusOutlined } from '@ant-design/icons';
+import { CURRENCIES } from '../shared/constants';
 
 function Overview() {
   const {
@@ -40,7 +40,7 @@ function Overview() {
   const [detailId, setDetailId] = useState<number>();
 
   const filterCurrencyChange = (event: RadioChangeEvent) => {
-    const value: Currency = event.target.value;
+    const value: string = event.target.value;
     setFilterCurrency(value);
   };
 

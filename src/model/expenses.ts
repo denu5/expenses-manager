@@ -9,15 +9,14 @@ import {
   ThunkOn
 } from 'easy-peasy';
 import { Injections } from '../store';
-import { DEFAULT_CURRENCY, Currency } from '../constants/currencies';
-import { ExpenseCategory } from '../constants/expenseTypes';
+import { DEFAULT_CURRENCY } from '../shared/constants';
 
 export interface BaseExpense {
   timestamp: number;
   amount: number;
   recipient: string;
-  currency: Currency;
-  category: ExpenseCategory;
+  currency: string;
+  category: string;
 }
 
 export interface Expense extends BaseExpense {
@@ -26,7 +25,7 @@ export interface Expense extends BaseExpense {
 
 interface ExpensesState {
   expenses: Expense[];
-  filterCurrency: Currency | null;
+  filterCurrency: string | null;
   totalCount: number;
   isLoading: boolean;
   error: string | null;
@@ -34,7 +33,7 @@ interface ExpensesState {
 
 export interface ExpensesModel extends ExpensesState {
   totalSum: Computed<ExpensesModel, number>;
-  setFilterCurrency: Action<ExpensesModel, Currency>;
+  setFilterCurrency: Action<ExpensesModel, string>;
   onSetFilters: ThunkOn<ExpensesModel>;
   getExpensesStart: Action<ExpensesModel>;
   getExpensesSuccess: Action<ExpensesModel, Expense[]>;
@@ -77,7 +76,7 @@ const expensesModel: ExpensesModel = {
     try {
       actions.getExpensesStart();
       const { filterCurrency } = getState();
-      const expenses = await expenseService.getExpenses(filterCurrency);
+      const expenses = await expenseService.getExpensesList(filterCurrency);
       actions.getExpensesSuccess(expenses);
     } catch (err) {
       actions.getExpensesFailure(err.toString());

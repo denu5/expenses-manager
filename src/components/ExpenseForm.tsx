@@ -1,24 +1,8 @@
 import React from 'react';
 
 import { Input, InputNumber, Form, Select, DatePicker, TimePicker } from 'antd';
-import { BaseExpense } from '../model/expenses';
-import moment, { Moment } from 'moment';
-import { ExpenseCategory } from '../constants/expenseTypes';
-import { Currency } from '../constants/currencies';
-
-interface ExpenseFormData {
-  date: Moment;
-  time: Moment;
-  amount: number;
-  recipient: string;
-  currency: Currency;
-  category: ExpenseCategory;
-}
-
-// TODO move to constants`?
-const dateFormat = 'DD-MM-YYYY';
-const timeFormat = 'HH:mm';
-const unixTimeFormat = 'X';
+import { fromExpenseToFormData, fromFormDataToExpense } from '../shared/utils';
+import { dateFormat, timeFormat } from '../shared/constants';
 
 export const ExpenseForm = ({ onSubmit, formRef, expense }: any) => {
   const formData = expense ? fromExpenseToFormData(expense) : {};
@@ -94,45 +78,5 @@ export const ExpenseForm = ({ onSubmit, formRef, expense }: any) => {
     </Form>
   );
 };
-
-// TODO move to utils
-
-function addTimeToDate(date: Moment, time: Moment): Moment {
-  return date.set('hour', time.hours()).set('minute', time.minutes());
-}
-
-function momentToUnix(timestamp: Moment): number {
-  return parseInt(timestamp.format(unixTimeFormat));
-}
-
-function unixToMoment(timestamp: number): Moment[] {
-  const ts = moment.unix(timestamp);
-  return [moment(ts, dateFormat), moment(ts, timeFormat)];
-}
-
-function fromFormDataToExpense(data: ExpenseFormData): BaseExpense {
-  const timestamp = momentToUnix(addTimeToDate(data.date, data.time));
-
-  return {
-    timestamp: timestamp,
-    amount: data.amount,
-    recipient: data.recipient,
-    currency: data.currency,
-    category: data.category
-  };
-}
-
-function fromExpenseToFormData(data: BaseExpense): ExpenseFormData {
-  const [date, time] = unixToMoment(data.timestamp);
-
-  return {
-    amount: data.amount,
-    recipient: data.recipient,
-    currency: data.currency,
-    category: data.category,
-    date,
-    time
-  };
-}
 
 export default ExpenseForm;
