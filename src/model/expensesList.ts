@@ -6,10 +6,13 @@ import {
   Computed,
   computed,
   thunkOn,
-  ThunkOn
+  ThunkOn,
+  ActionOn,
+  actionOn
 } from 'easy-peasy';
 import { Injections } from '../store';
 import { DEFAULT_CURRENCY } from '../shared/constants';
+import { StoreModel } from '.';
 
 export interface BaseExpense {
   timestamp: number;
@@ -39,6 +42,7 @@ export interface ExpensesListModel extends ExpensesListState {
   getExpensesSuccess: Action<ExpensesListModel, Expense[]>;
   getExpensesFailure: Action<ExpensesListModel, string>;
   fetchExpenses: Thunk<ExpensesListModel, void, Injections>;
+  onDeleteExpenseSuccess: ActionOn<ExpensesListModel, StoreModel>;
 }
 
 const initialState: ExpensesListState = {
@@ -86,7 +90,13 @@ const expensesListModel: ExpensesListModel = {
     } catch (err) {
       actions.getExpensesFailure(err.toString());
     }
-  })
+  }),
+  onDeleteExpenseSuccess: actionOn(
+    (actions, storeActions) => storeActions.deleteExpense.deleteExpenseSuccess,
+    (state, { payload }) => {
+      state.expenses = state.expenses.filter(i => i.id !== payload.id);
+    }
+  )
 };
 
 export default expensesListModel;

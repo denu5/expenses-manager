@@ -64,14 +64,14 @@ function DetailModal({ afterClose, id }: any) {
     : [
         <Button
           key="delete"
-          type="danger"
+          type="link"
           loading={isDeleteLoading}
           onClick={handleDelete}
         >
-          Delete Expense
+          Delete
         </Button>,
         <Button key="back" onClick={handleCancel}>
-          Discard Changes
+          Discard
         </Button>,
         <Button
           key="submit"
@@ -85,14 +85,13 @@ function DetailModal({ afterClose, id }: any) {
 
   return (
     <Modal
-      title="Edit"
+      title="Edit Expense"
       visible={isVisible}
       confirmLoading={isUpdateLoading}
       afterClose={afterClose}
       destroyOnClose={true}
       closable={true}
-      okText="Save"
-      cancelText="Discard"
+      onCancel={handleCancel}
       footer={footer}
     >
       <Spin
