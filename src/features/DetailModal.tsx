@@ -24,11 +24,10 @@ function DetailModal({ afterClose, id }: any) {
 
   useEffect(() => {
     fetchExpense(id);
-
-    return function cleanup() {
+    return () => {
       reset();
     };
-  }, [id]);
+  }, [id, fetchExpense, reset]);
 
   const onSubmit = (editedExpense: Expense) => {
     if (expense) {

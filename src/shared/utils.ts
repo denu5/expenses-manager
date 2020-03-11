@@ -1,6 +1,6 @@
 import moment, { Moment } from 'moment';
 import { Expense, BaseExpense } from '../model/expensesList';
-import { unixTimeFormat, dateFormat, timeFormat } from './constants';
+import { UNIX_FORMAT, DATE_FORMAT, TIME_FORMAT } from './constants';
 
 interface ExpenseFormData {
   date: Moment;
@@ -16,12 +16,12 @@ export function addTimeToDate(date: Moment, time: Moment): Moment {
 }
 
 export function momentToUnix(timestamp: Moment): number {
-  return parseInt(timestamp.format(unixTimeFormat));
+  return parseInt(timestamp.format(UNIX_FORMAT));
 }
 
 export function unixToMoment(timestamp: number): Moment[] {
   const ts = moment.unix(timestamp);
-  return [moment(ts, dateFormat), moment(ts, timeFormat)];
+  return [moment(ts, DATE_FORMAT), moment(ts, TIME_FORMAT)];
 }
 
 export function fromFormDataToExpense(data: ExpenseFormData): BaseExpense {

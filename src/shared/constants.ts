@@ -19,6 +19,6 @@ export const EXPENSE_CATEGORIES: string[] = [
 
 export const DEFAULT_EXPENSE_TYPES = EXPENSE_CATEGORIES[0];
 
-export const dateFormat = 'DD-MM-YYYY';
-export const timeFormat = 'HH:mm';
-export const unixTimeFormat = 'X';
+export const DATE_FORMAT = 'DD-MM-YYYY';
+export const TIME_FORMAT = 'HH:mm';
+export const UNIX_FORMAT = 'X';

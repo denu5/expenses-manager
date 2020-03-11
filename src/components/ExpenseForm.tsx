@@ -2,7 +2,12 @@ import React from 'react';
 
 import { Input, InputNumber, Form, Select, DatePicker, TimePicker } from 'antd';
 import { fromExpenseToFormData, fromFormDataToExpense } from '../shared/utils';
-import { dateFormat, timeFormat } from '../shared/constants';
+import {
+  DATE_FORMAT,
+  TIME_FORMAT,
+  CURRENCIES,
+  EXPENSE_CATEGORIES
+} from '../shared/constants';
 
 export const ExpenseForm = ({ onSubmit, formRef, expense }: any) => {
   const formData = expense ? fromExpenseToFormData(expense) : {};
@@ -35,7 +40,11 @@ export const ExpenseForm = ({ onSubmit, formRef, expense }: any) => {
         rules={[{ required: true, message: 'Category is required' }]}
       >
         <Select>
-          <Select.Option value="TRANSPORT">TRANSPORT</Select.Option>
+          {EXPENSE_CATEGORIES.map(category => (
+            <Select.Option key={category} value={category}>
+              {category}
+            </Select.Option>
+          ))}
         </Select>
       </Form.Item>
 
@@ -45,7 +54,7 @@ export const ExpenseForm = ({ onSubmit, formRef, expense }: any) => {
         label="Date"
         labelAlign="left"
       >
-        <DatePicker format={dateFormat} />
+        <DatePicker format={DATE_FORMAT} />
       </Form.Item>
       <Form.Item
         name="time"
@@ -53,7 +62,7 @@ export const ExpenseForm = ({ onSubmit, formRef, expense }: any) => {
         label="Time"
         labelAlign="left"
       >
-        <TimePicker format={timeFormat} />
+        <TimePicker format={TIME_FORMAT} />
       </Form.Item>
 
       <Form.Item
@@ -72,7 +81,11 @@ export const ExpenseForm = ({ onSubmit, formRef, expense }: any) => {
         rules={[{ required: true, message: 'Currency is required' }]}
       >
         <Select>
-          <Select.Option value="CHF">CHF</Select.Option>
+          {CURRENCIES.map(currency => (
+            <Select.Option key={currency} value={currency}>
+              {currency}
+            </Select.Option>
+          ))}
         </Select>
       </Form.Item>
     </Form>
