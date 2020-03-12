@@ -17,8 +17,16 @@ export const EXPENSE_CATEGORIES: string[] = [
   'OTHER'
 ];
 
+const EXPENSE_CATEGORIES_COLORS = ['#f56a00', '#7265e6', '#ffbf00', '#00a2ae'];
+
+export const getCategoryColor = (category: string): string => {
+  return (
+    EXPENSE_CATEGORIES_COLORS[EXPENSE_CATEGORIES.indexOf(category)] || '#CCCCCC'
+  );
+};
+
 export const DEFAULT_EXPENSE_TYPES = EXPENSE_CATEGORIES[0];
 
-export const DATE_FORMAT = 'DD-MM-YYYY';
+export const DATE_FORMAT = 'DD/MM/YYYY';
 export const TIME_FORMAT = 'HH:mm';
 export const UNIX_FORMAT = 'X';

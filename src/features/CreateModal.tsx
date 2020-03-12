@@ -42,7 +42,12 @@ function CreateModal({ afterClose }: any) {
       okText="Create"
       cancelText="Discard"
     >
-      <ExpenseForm onSubmit={onSubmit} isLoading={isLoading} formRef={form} />
+      <ExpenseForm
+        onSubmit={onSubmit}
+        isLoading={isLoading}
+        disabled={isLoading}
+        formRef={form}
+      />
     </Modal>
   );
 }

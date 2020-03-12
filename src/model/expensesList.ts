@@ -61,6 +61,12 @@ const expensesListModel: ExpensesListModel = {
   setFilterCurrency: action((state, payload) => {
     state.filterCurrency = payload;
   }),
+  onSetFilters: thunkOn(
+    actions => actions.setFilterCurrency,
+    actions => {
+      actions.fetchExpenses();
+    }
+  ),
   getExpensesStart: action(state => {
     state.isLoading = true;
   }),
@@ -74,12 +80,6 @@ const expensesListModel: ExpensesListModel = {
     state.isLoading = false;
     state.error = payload;
   }),
-  onSetFilters: thunkOn(
-    actions => actions.setFilterCurrency,
-    actions => {
-      actions.fetchExpenses();
-    }
-  ),
   fetchExpenses: thunk(async (actions, _, { injections, getState }) => {
     const { expenseService } = injections;
     try {

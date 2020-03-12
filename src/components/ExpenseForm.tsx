@@ -41,8 +41,8 @@ export const ExpenseForm = ({
     >
       <Form.Item
         name="recipient"
-        rules={[{ required: true }]}
-        label="Recepient"
+        rules={[{ required: true, message: 'Recipient is required' }]}
+        label="Recipient"
         labelAlign="left"
       >
         <Input disabled={disabled} />
@@ -103,7 +103,7 @@ export const ExpenseForm = ({
           >
             <Select
               disabled={disabled}
-              defaultValue={expense?.currency || DEFAULT_CURRENCY}
+              defaultValue={expense?.currency || 'EUR'}
               style={{ minWidth: 100 }}
             >
               {CURRENCIES.map(currency => (

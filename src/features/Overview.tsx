@@ -1,56 +1,42 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   PageHeader,
   Statistic,
-  List,
   Radio,
   Row,
   Col,
   Button,
-  Avatar,
   Card,
   Affix
 } from 'antd';
 import { useStoreState, useStoreActions } from '../store/hooks';
 
-import { UserOutlined } from '@ant-design/icons';
-
-import CurrencyFormat from 'react-currency-formatter';
 import { RadioChangeEvent } from 'antd/lib/radio';
 import CreateModal from './CreateModal';
 import DetailModal from './DetailModal';
 
 import { PlusOutlined } from '@ant-design/icons';
 import { CURRENCIES } from '../shared/constants';
+import ExpensesList from '../components/ExpensesList';
 
 function Overview() {
-  const {
-    expenses,
-    totalCount,
-    totalSum,
-    filterCurrency,
-    isLoading
-  } = useStoreState(state => state.expensesList);
-
-  const { setFilterCurrency, fetchExpenses } = useStoreActions(
+  const { totalCount, totalSum, filterCurrency } = useStoreState(
     state => state.expensesList
   );
 
+  const { setFilterCurrency } = useStoreActions(state => state.expensesList);
+
   const [isCreateModalVisible, setCreateModalVisible] = useState(false);
   const [detailId, setDetailId] = useState<number>();
-
-  const filterCurrencyChange = (event: RadioChangeEvent) => {
-    const value: string = event.target.value;
-    setFilterCurrency(value);
-  };
 
   const afterDetailModalClose = () => {
     setDetailId(undefined);
   };
 
-  useEffect(() => {
-    fetchExpenses();
-  }, [fetchExpenses]);
+  const filterCurrencyChange = (event: RadioChangeEvent) => {
+    const value: string = event.target.value;
+    setFilterCurrency(value);
+  };
 
   return (
     <>
@@ -68,7 +54,7 @@ function Overview() {
         ]}
       ></PageHeader>
 
-      <Row justify="space-around" align="middle" style={{ height: '10vh' }}>
+      {/* <Row justify="space-around" align="middle" style={{ height: '10vh' }}>
         <Col span={4}>
           <Statistic title="Total Amount" value={totalSum} precision={2} />
           <Statistic title="Total Items" value={totalCount} />
@@ -87,24 +73,10 @@ function Overview() {
             </Radio.Button>
           ))}
         </Radio.Group>
-      </Row>
+      </Row> */}
 
       <Card>
-        <List
-          itemLayout="horizontal"
-          dataSource={expenses}
-          loading={isLoading}
-          renderItem={item => (
-            <List.Item onClick={() => setDetailId(item.id)}>
-              <List.Item.Meta
-                avatar={<Avatar size="large" icon={<UserOutlined />} />}
-                title={item.recipient}
-                description={item.category}
-              />
-              <CurrencyFormat currency={item.currency} quantity={item.amount} />
-            </List.Item>
-          )}
-        />
+        <ExpensesList onItemClick={setDetailId} />
       </Card>
 
       {isCreateModalVisible && (

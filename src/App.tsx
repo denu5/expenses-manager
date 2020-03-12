@@ -13,7 +13,7 @@ function App() {
       </Layout.Content>
 
       <Layout.Footer style={{ textAlign: 'center' }}>
-        Expenses Manger ©2020 Created by R. Denus
+        Expenses Manger Demo © 2020 Created by R. Denus
       </Layout.Footer>
     </Layout>
   );
