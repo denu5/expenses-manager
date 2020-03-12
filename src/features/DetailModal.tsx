@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Modal, Spin, Button } from 'antd';
+import { Form, Modal, Spin, Button, Row } from 'antd';
 
 import { useStoreActions, useStoreState } from '../store/hooks';
 import { Expense } from '../model/expensesList';
@@ -94,11 +94,14 @@ function DetailModal({ afterClose, id }: any) {
       onCancel={handleCancel}
       footer={footer}
     >
-      <Spin
-        size="large"
-        tip="Loading Details..."
-        spinning={isFetchLoading}
-      ></Spin>
+      <Row justify="space-around" align="middle">
+        <Spin
+          size="large"
+          tip="Loading Details..."
+          spinning={isFetchLoading}
+        ></Spin>
+      </Row>
+
       {expense && (
         <ExpenseForm
           onSubmit={onSaveUpdate}
