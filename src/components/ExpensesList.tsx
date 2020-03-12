@@ -1,13 +1,11 @@
 import React, { useEffect } from 'react';
 import { List, Avatar } from 'antd';
-import { useStoreState, useStoreActions } from '../store/hooks';
-import { Expense } from '../model/expensesList';
-import { fromUnixToMoment } from '../shared/utils';
-import {
-  DATE_FORMAT,
-  TIME_FORMAT,
-  getCategoryColor
-} from '../shared/constants';
+
+import { useStoreState, useStoreActions } from 'store/hooks';
+
+import { fromUnixToMoment } from 'shared/utils';
+import { getCategoryColor, DATE_FORMAT, TIME_FORMAT } from 'shared/constants';
+import { Expense } from 'model/expensesList';
 
 function CategoryIcon(category: string) {
   return (

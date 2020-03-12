@@ -9,15 +9,14 @@ import {
   Card,
   Affix
 } from 'antd';
-import { useStoreState, useStoreActions } from '../store/hooks';
 
 import { RadioChangeEvent } from 'antd/lib/radio';
-import CreateModal from './CreateModal';
-import DetailModal from './DetailModal';
 
 import { PlusOutlined } from '@ant-design/icons';
-import { CURRENCIES } from '../shared/constants';
-import ExpensesList from '../components/ExpensesList';
+import { useStoreState, useStoreActions } from 'store/hooks';
+import ExpensesList from 'components/ExpensesList';
+import CreateModal from './CreateModal';
+import DetailModal from './DetailModal';
 
 function Overview() {
   const { totalCount, totalSum, filterCurrency } = useStoreState(

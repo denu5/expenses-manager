@@ -1,6 +1,6 @@
 import { createStore } from 'easy-peasy';
-import model from '../model';
-import * as expenseService from '../services/expenseService';
+import model from 'model';
+import * as expenseService from 'services/expenseService';
 
 export interface Injections {
   expenseService: typeof expenseService;

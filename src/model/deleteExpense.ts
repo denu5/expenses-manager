@@ -1,7 +1,7 @@
 import { Action, action, Thunk, thunk } from 'easy-peasy';
-import { Injections } from '../store';
 
 import { Expense } from './expensesList';
+import { Injections } from 'store';
 
 interface DeleteExpenseState {
   deletedExpense: Expense | null;

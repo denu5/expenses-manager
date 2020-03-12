@@ -10,9 +10,11 @@ import {
   ActionOn,
   actionOn
 } from 'easy-peasy';
-import { Injections } from '../store';
-import { DEFAULT_CURRENCY } from '../shared/constants';
-import { StoreModel } from '.';
+import { Injections } from 'store';
+import { StoreModel } from 'model';
+import { DEFAULT_CURRENCY } from 'shared/constants';
+
+
 
 export interface BaseExpense {
   timestamp: number;

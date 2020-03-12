@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Modal, Spin, Button, Row } from 'antd';
 
-import { useStoreActions, useStoreState } from '../store/hooks';
-import { Expense } from '../model/expensesList';
-
-import ExpenseForm from '../components/ExpenseForm';
+import { Expense } from 'model/expensesList';
+import ExpenseForm from 'components/ExpenseForm';
+import { useStoreState, useStoreActions } from 'store/hooks';
 
 function DetailModal({ afterClose, id }: any) {
   const { fetchExpense, reset } = useStoreActions(state => state.expenseDetail);
@@ -35,7 +34,6 @@ function DetailModal({ afterClose, id }: any) {
 
   const onSaveUpdate = (editedExpense: Expense) => {
     if (expense) {
-      // TODO Footer hide while init loading
       editedExpense.id = expense.id;
       updateExpense(editedExpense).then(() => hide());
     }
