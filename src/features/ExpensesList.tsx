@@ -10,7 +10,9 @@ interface Props {
 }
 
 const ExpensesList: React.FC<Props> = ({ onItemClick }) => {
-  const { expenses, isLoading } = useStoreState(state => state.expensesList);
+  const { expenses, isLoading, categorySum } = useStoreState(
+    state => state.expensesList
+  );
   const { fetchExpenses } = useStoreActions(state => state.expensesList);
 
   useEffect(() => {

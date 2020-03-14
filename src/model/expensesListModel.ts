@@ -14,8 +14,6 @@ import { Injections } from 'store';
 import { StoreModel } from 'model';
 import { DEFAULT_CURRENCY } from 'shared/constants';
 
-
-
 export interface BaseExpense {
   timestamp: number;
   amount: number;
@@ -36,8 +34,13 @@ interface ExpensesListState {
   error: string | null;
 }
 
+interface CategorySum {
+  [key: string]: number;
+}
+
 export interface ExpensesListModel extends ExpensesListState {
   totalSum: Computed<ExpensesListModel, number>;
+  categorySum: Computed<ExpensesListModel, CategorySum>;
   setFilterCurrency: Action<ExpensesListModel, string>;
   onSetFilters: ThunkOn<ExpensesListModel>;
   getExpensesStart: Action<ExpensesListModel>;
@@ -59,6 +62,9 @@ const expensesListModel: ExpensesListModel = {
   ...initialState,
   totalSum: computed(state => {
     return state.expenses.reduce((acc, item) => acc + item.amount, 0);
+  }),
+  categorySum: computed(state => {
+    return calcCategorySum(state.expenses);
   }),
   setFilterCurrency: action((state, payload) => {
     state.filterCurrency = payload;
@@ -100,5 +106,15 @@ const expensesListModel: ExpensesListModel = {
     }
   )
 };
+
+function calcCategorySum(expenses: Expense[]): CategorySum {
+  const res: CategorySum = {};
+  expenses.forEach(function(el) {
+    res[el.category] = res[el.category]
+      ? (res[el.category] += +el.amount)
+      : +el.amount;
+  });
+  return res;
+}
 
 export default expensesListModel;
