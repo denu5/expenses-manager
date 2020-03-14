@@ -5,6 +5,8 @@ import createExpenseModel, { CreateExpenseModel } from './createExpenseModel';
 import deleteExpenseModel, { DeleteExpenseModel } from './deleteExpenseModel';
 import updateExpenseModel, { UpdateExpenseModel } from './updateExpenseModel';
 
+import notificationsModel, { NotificationsModel } from './notificationsModel';
+
 export interface StoreModel {
   expensesList: ExpensesListModel;
   expenseDetail: ExpenseDetailModel;
@@ -12,6 +14,7 @@ export interface StoreModel {
   createExpense: CreateExpenseModel;
   deleteExpense: DeleteExpenseModel;
   updateExpense: UpdateExpenseModel;
+  notifications: NotificationsModel;
 }
 
 const storeModel: StoreModel = {
@@ -19,7 +22,8 @@ const storeModel: StoreModel = {
   expenseDetail: expenseDetailModel,
   createExpense: createExpenseModel,
   deleteExpense: deleteExpenseModel,
-  updateExpense: updateExpenseModel
+  updateExpense: updateExpenseModel,
+  notifications: notificationsModel
 };
 
 export default storeModel;

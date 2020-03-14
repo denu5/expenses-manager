@@ -30,7 +30,7 @@ const createExpenseModel: CreateExpenseModel = {
     state.isLoading = true;
   }),
   createExpenseSuccess: action((state, payload) => {
-    state.createdExpense = payload; // TODO maybe remove if not used in notification
+    state.createdExpense = payload;
     state.isLoading = false;
     state.error = null;
   }),

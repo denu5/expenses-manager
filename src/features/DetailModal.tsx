@@ -1,5 +1,5 @@
 import React, { useState, useEffect, FC } from 'react';
-import { Form, Modal, Spin, Button, Row } from 'antd';
+import { Form, Modal, Spin, Button, Row, Alert } from 'antd';
 import { useStoreState, useStoreActions } from 'store/hooks';
 
 import { Expense } from 'model/expensesListModel';
@@ -15,9 +15,11 @@ const DetailModal: FC<Props> = ({ id, afterClose }) => {
   const { updateExpense } = useStoreActions(state => state.updateExpense);
   const { deleteExpense } = useStoreActions(state => state.deleteExpense);
 
-  const { isLoading: isFetchLoading, expense } = useStoreState(
-    state => state.expenseDetail
-  );
+  const {
+    isLoading: isFetchLoading,
+    expense,
+    error: fetchError
+  } = useStoreState(state => state.expenseDetail);
 
   const { isLoading: isUpdateLoading } = useStoreState(
     state => state.updateExpense
@@ -62,29 +64,30 @@ const DetailModal: FC<Props> = ({ id, afterClose }) => {
     setIsVisible(false);
   };
 
-  const footer = isFetchLoading
-    ? null
-    : [
-        <Button
-          key="delete"
-          type="link"
-          loading={isDeleteLoading}
-          onClick={handleDelete}
-        >
-          Delete
-        </Button>,
-        <Button key="back" onClick={handleCancel}>
-          Discard
-        </Button>,
-        <Button
-          key="submit"
-          type="primary"
-          loading={isUpdateLoading}
-          onClick={handleSaveUpdate}
-        >
-          Save
-        </Button>
-      ];
+  const footer =
+    isFetchLoading || fetchError
+      ? null
+      : [
+          <Button
+            key="delete"
+            type="link"
+            loading={isDeleteLoading}
+            onClick={handleDelete}
+          >
+            Delete
+          </Button>,
+          <Button key="back" onClick={handleCancel}>
+            Discard
+          </Button>,
+          <Button
+            key="submit"
+            type="primary"
+            loading={isUpdateLoading}
+            onClick={handleSaveUpdate}
+          >
+            Save
+          </Button>
+        ];
 
   return (
     <Modal
@@ -104,6 +107,10 @@ const DetailModal: FC<Props> = ({ id, afterClose }) => {
           spinning={isFetchLoading}
         ></Spin>
       </Row>
+
+      {fetchError && (
+        <Alert message="Error" description={fetchError} type="error" showIcon />
+      )}
 
       {expense && (
         <ExpenseForm
