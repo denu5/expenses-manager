@@ -1,12 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, FC } from 'react';
 import { Form, Modal } from 'antd';
 
-import { useStoreActions, useStoreState } from '../store/hooks';
-import { Expense } from '../model/expensesList';
+import { useStoreActions, useStoreState } from 'store/hooks';
+import { Expense } from 'model/expensesListModel';
 
-import ExpenseForm from '../components/ExpenseForm';
+import ExpenseForm from 'components/ExpenseForm';
 
-function CreateModal({ afterClose }: any) {
+interface Props {
+  afterClose?: () => unknown;
+}
+
+const CreateExpenseModal: FC<Props> = ({ afterClose }) => {
   const { createExpense } = useStoreActions(state => state.createExpense);
   const { isLoading } = useStoreState(state => state.createExpense);
 
@@ -50,6 +54,6 @@ function CreateModal({ afterClose }: any) {
       />
     </Modal>
   );
-}
+};
 
-export default CreateModal;
+export default CreateExpenseModal;

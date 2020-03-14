@@ -1,6 +1,6 @@
 import { Action, action, Thunk, thunk, ThunkOn, thunkOn } from 'easy-peasy';
 
-import { Expense } from './expensesList';
+import { Expense } from './expensesListModel';
 import { Injections } from 'store';
 import { StoreModel } from 'model';
 

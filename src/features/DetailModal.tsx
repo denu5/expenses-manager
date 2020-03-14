@@ -1,11 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, FC } from 'react';
 import { Form, Modal, Spin, Button, Row } from 'antd';
-
-import { Expense } from 'model/expensesList';
-import ExpenseForm from 'components/ExpenseForm';
 import { useStoreState, useStoreActions } from 'store/hooks';
 
-function DetailModal({ afterClose, id }: any) {
+import { Expense } from 'model/expensesListModel';
+import ExpenseForm from 'components/ExpenseForm';
+
+interface Props {
+  id: number;
+  afterClose?: () => unknown;
+}
+
+const DetailModal: FC<Props> = ({ id, afterClose }) => {
   const { fetchExpense, reset } = useStoreActions(state => state.expenseDetail);
   const { updateExpense } = useStoreActions(state => state.updateExpense);
   const { deleteExpense } = useStoreActions(state => state.deleteExpense);
@@ -110,6 +115,6 @@ function DetailModal({ afterClose, id }: any) {
       )}
     </Modal>
   );
-}
+};
 
 export default DetailModal;

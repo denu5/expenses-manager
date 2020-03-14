@@ -1,9 +1,9 @@
-import expensesListModel, { ExpensesListModel } from './expensesList';
-import expenseDetailModel, { ExpenseDetailModel } from './expenseDetail';
+import expensesListModel, { ExpensesListModel } from './expensesListModel';
+import expenseDetailModel, { ExpenseDetailModel } from './expenseDetailModel';
 
-import createExpenseModel, { CreateExpenseModel } from './createExpense';
-import deleteExpenseModel, { DeleteExpenseModel } from './deleteExpense';
-import updateExpenseModel, { UpdateExpenseModel } from './updateExpense';
+import createExpenseModel, { CreateExpenseModel } from './createExpenseModel';
+import deleteExpenseModel, { DeleteExpenseModel } from './deleteExpenseModel';
+import updateExpenseModel, { UpdateExpenseModel } from './updateExpenseModel';
 
 export interface StoreModel {
   expensesList: ExpensesListModel;
