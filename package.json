@@ -1,5 +1,5 @@
 {
-  "name": "vt-expenses-manager",
+  "name": "expenses-manager",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -30,6 +30,7 @@
     "typescript": "^3.7.5"
   },
   "scripts": {
+    "start:server": "json-server generateData.js --delay 1500 --port 4000",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
