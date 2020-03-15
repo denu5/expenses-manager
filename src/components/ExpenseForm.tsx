@@ -19,8 +19,6 @@ import {
   DEFAULT_CURRENCY
 } from '../shared/constants';
 
-
-
 export const ExpenseForm = ({
   onSubmit,
   formRef,
@@ -66,7 +64,7 @@ export const ExpenseForm = ({
       </Form.Item>
 
       <Row gutter={32}>
-        <Col xs={24} sm={12} md={12} lg={12} xl={12}>
+        <Col xs={24} sm={12}>
           <Form.Item
             name="date"
             rules={[{ required: true, message: 'Date is required' }]}
@@ -80,7 +78,7 @@ export const ExpenseForm = ({
             />
           </Form.Item>
         </Col>
-        <Col xs={24} sm={12} md={12} lg={12} xl={12}>
+        <Col xs={24} sm={12}>
           <Form.Item
             name="time"
             rules={[{ required: true, message: 'Time is required' }]}
@@ -97,7 +95,7 @@ export const ExpenseForm = ({
       </Row>
 
       <Row gutter={32}>
-        <Col xs={24} sm={8} md={8} lg={8} xl={8}>
+        <Col xs={24} sm={8}>
           <Form.Item
             label="Currency"
             name="currency"
@@ -116,7 +114,7 @@ export const ExpenseForm = ({
             </Select>
           </Form.Item>
         </Col>
-        <Col xs={24} sm={16} md={16} lg={16} xl={16}>
+        <Col xs={24} sm={16}>
           <Form.Item
             label="Amount"
             name="amount"

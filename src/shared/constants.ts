@@ -17,7 +17,7 @@ export const EXPENSE_CATEGORIES: string[] = [
   'OTHER'
 ];
 
-const EXPENSE_CATEGORIES_COLORS = ['#f56a00', '#7265e6', '#ffbf00', '#00a2ae'];
+const EXPENSE_CATEGORIES_COLORS = ['#FF6384', '#36A2EB', '#FFCE56', '#00a2ae'];
 
 export const getCategoryColor = (category: string): string => {
   return (

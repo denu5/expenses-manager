@@ -52,7 +52,7 @@ export interface ExpensesListModel extends ExpensesListState {
 
 const initialState: ExpensesListState = {
   expenses: [],
-  filterCurrency: DEFAULT_CURRENCY,
+  filterCurrency: null,
   totalCount: 0,
   isLoading: false,
   error: null
@@ -67,6 +67,10 @@ const expensesListModel: ExpensesListModel = {
     return calcCategorySum(state.expenses);
   }),
   setFilterCurrency: action((state, payload) => {
+    if (payload === 'ALL') {
+      state.filterCurrency = null;
+      return;
+    }
     state.filterCurrency = payload;
   }),
   onSetFilters: thunkOn(

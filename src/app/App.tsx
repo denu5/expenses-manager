@@ -8,6 +8,8 @@ import CreateExpenseModal from 'features/CreateExpenseModal';
 import DetailModal from 'features/DetailModal';
 
 import { PlusOutlined } from '@ant-design/icons';
+import ExpensesListControl from 'features/ExpensesListControl';
+import ExpensesCharts from 'features/ExpensesCharts';
 
 function App() {
   const [isCreateModalVisible, setCreateModalVisible] = useState(false);
@@ -35,7 +37,8 @@ function App() {
               </Button>
             ]}
           />
-
+          <ExpensesCharts />
+          <ExpensesListControl />
           <ExpensesList onItemClick={item => setDetailId(item.id)} />
         </Layout.Content>
 
