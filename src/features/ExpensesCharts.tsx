@@ -1,10 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Card } from 'antd';
 
 import { Doughnut } from 'react-chartjs-2';
 
-import { useStoreState, useStoreActions } from 'store/hooks';
-import { Expense } from 'model/expensesListModel';
+import { useStoreState } from 'store/hooks';
 import { getCategoryColor } from 'shared/constants';
 
 const ExpensesCharts: React.FC = () => {
