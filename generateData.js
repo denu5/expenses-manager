@@ -15,7 +15,13 @@ let generateExpenses = () => {
       timestamp: parseInt(timestamp),
       amount: parseFloat(faker.finance.amount()),
       recipient: faker.company.companyName(),
-      category: faker.helpers.randomize(['TRANSPORT', 'FOOD', 'DRINKS']),
+      category: faker.helpers.randomize([
+        'FOOD',
+        'DRINKS',
+        'TRANSPORT',
+        'SHOPPING',
+        'OTHER'
+      ]),
       currency: faker.helpers.randomize(['USD', 'CHF', 'EUR'])
     });
   }
