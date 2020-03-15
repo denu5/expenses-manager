@@ -1,31 +1,32 @@
 export const API = {
-  BASE: '//localhost:4000',
-  EXPENSES: '/expenses',
-  CURRENCIES: '/currencies',
-  EXCHANGERATES: '/exchange-rates'
+  BASE: process.env.REACT_APP_API_BASE,
+  EXPENSES: '/expenses'
 };
 
-export const CURRENCIES: string[] = ['CHF', 'EUR', 'USD', 'PLN'];
+function arrayFromEnv(arr: string | undefined): string[] {
+  if (!arr) {
+    return [];
+  }
+  return arr.split(',');
+}
 
-export const DEFAULT_CURRENCY = CURRENCIES[0];
+export const CURRENCIES: string[] = arrayFromEnv(
+  process.env.REACT_APP_CURRENCIES
+);
 
-export const EXPENSE_CATEGORIES: string[] = [
-  'FOOD',
-  'DRINKS',
-  'TRANSPORT',
-  'SHOPPING',
-  'OTHER'
-];
+export const DEFAULT_CURRENCY = process.env.REACT_APP_DEFAULT_CURRENCY;
 
-const EXPENSE_CATEGORIES_COLORS = ['#FF6384', '#36A2EB', '#FFCE56', '#00a2ae'];
+export const CATEGORIES: string[] = arrayFromEnv(
+  process.env.REACT_APP_CATEGORIES
+);
+
+const CATEGORIES_COLORS = arrayFromEnv(process.env.REACT_APP_CATEGORY_COLORS);
 
 export const getCategoryColor = (category: string): string => {
-  return (
-    EXPENSE_CATEGORIES_COLORS[EXPENSE_CATEGORIES.indexOf(category)] || '#CCCCCC'
-  );
+  return CATEGORIES_COLORS[CATEGORIES.indexOf(category)] || '#CCCCCC';
 };
 
-export const DEFAULT_EXPENSE_TYPES = EXPENSE_CATEGORIES[0];
+export const DEFAULT_CATEGORY = process.env.REACT_APP_DEFAULT_CATEGORY;
 
 export const DATE_FORMAT = 'DD/MM/YYYY';
 export const TIME_FORMAT = 'HH:mm';

@@ -1,6 +1,13 @@
-let faker = require('faker');
+const faker = require('faker');
+const moment = require('moment');
+require('dotenv').config();
 
-let moment = require('moment');
+function arrayFromEnv(arr) {
+  if (!arr) {
+    return [];
+  }
+  return arr.split(',');
+}
 
 let generateExpenses = () => {
   const expenses = [];
@@ -15,14 +22,12 @@ let generateExpenses = () => {
       timestamp: parseInt(timestamp),
       amount: parseFloat(faker.finance.amount()),
       recipient: faker.company.companyName(),
-      category: faker.helpers.randomize([
-        'FOOD',
-        'DRINKS',
-        'TRANSPORT',
-        'SHOPPING',
-        'OTHER'
-      ]),
-      currency: faker.helpers.randomize(['USD', 'CHF', 'EUR'])
+      category: faker.helpers.randomize(
+        arrayFromEnv(process.env.SERVER_CATEGORIES)
+      ),
+      currency: faker.helpers.randomize(
+        arrayFromEnv(process.env.SERVER_CURRENCIES)
+      )
     });
   }
 

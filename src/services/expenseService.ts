@@ -4,6 +4,7 @@ import { API } from 'shared/constants';
 
 const httpClient = axios.create({ baseURL: API.BASE });
 
+console.log(API.BASE);
 interface GetExpensesParams {
   _sort: string;
   _order: 'asc' | 'desc';

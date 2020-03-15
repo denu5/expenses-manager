@@ -15,7 +15,7 @@ import {
   DATE_FORMAT,
   TIME_FORMAT,
   CURRENCIES,
-  EXPENSE_CATEGORIES,
+  CATEGORIES,
   DEFAULT_CURRENCY
 } from '../shared/constants';
 
@@ -55,7 +55,7 @@ export const ExpenseForm = ({
         rules={[{ required: true, message: 'Category is required' }]}
       >
         <Select disabled={disabled}>
-          {EXPENSE_CATEGORIES.map(category => (
+          {CATEGORIES.map(category => (
             <Select.Option key={category} value={category}>
               {category}
             </Select.Option>
