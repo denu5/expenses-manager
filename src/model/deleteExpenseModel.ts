@@ -14,6 +14,7 @@ export interface DeleteExpenseModel extends DeleteExpenseState {
   deleteExpenseSuccess: Action<DeleteExpenseModel, Expense>;
   deleteExpenseFailure: Action<DeleteExpenseModel, string>;
   deleteExpense: Thunk<DeleteExpenseModel, Expense, Injections>;
+  reset: Action<DeleteExpenseModel>;
 }
 
 const initialState: DeleteExpenseState = {
@@ -39,13 +40,16 @@ const deleteExpenseModel: DeleteExpenseModel = {
   deleteExpense: thunk(async (actions, payload, { injections }) => {
     const { expenseService } = injections;
     try {
+      actions.reset();
       actions.deleteExpenseStart();
       await expenseService.deleteExpense(payload.id);
       actions.deleteExpenseSuccess(payload);
     } catch (err) {
       actions.deleteExpenseFailure(err.toString());
+      throw err;
     }
-  })
+  }),
+  reset: action(_ => ({ ...initialState }))
 };
 
 export default deleteExpenseModel;

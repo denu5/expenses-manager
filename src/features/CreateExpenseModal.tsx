@@ -2,7 +2,7 @@ import React, { useState, FC } from 'react';
 import { Form, Modal } from 'antd';
 
 import { useStoreActions, useStoreState } from 'store/hooks';
-import { Expense } from 'model/expensesListModel';
+import { BaseExpense } from 'model/expensesListModel';
 
 import ExpenseForm from 'components/ExpenseForm';
 
@@ -17,16 +17,17 @@ const CreateExpenseModal: FC<Props> = ({ afterClose }) => {
   const [form] = Form.useForm();
   const [isVisible, setIsVisible] = useState(true);
 
-  const onSubmit = (expense: Expense) => {
-    createExpense(expense).then(() => hide()); // TODO notify error?
+  const onSubmit = async (expense: BaseExpense) => {
+    try {
+      await createExpense(expense);
+      hide();
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const handleOk = () => {
     form.submit();
-  };
-
-  const handleCancel = () => {
-    hide();
   };
 
   const hide = () => {
@@ -39,19 +40,14 @@ const CreateExpenseModal: FC<Props> = ({ afterClose }) => {
       visible={isVisible}
       confirmLoading={isLoading}
       onOk={handleOk}
-      onCancel={handleCancel}
+      onCancel={hide}
       afterClose={afterClose}
       destroyOnClose={true}
       closable={true}
       okText="Create"
       cancelText="Discard"
     >
-      <ExpenseForm
-        onSubmit={onSubmit}
-        isLoading={isLoading}
-        disabled={isLoading}
-        formRef={form}
-      />
+      <ExpenseForm onSubmit={onSubmit} disabled={isLoading} formRef={form} />
     </Modal>
   );
 };

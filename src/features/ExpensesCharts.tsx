@@ -7,7 +7,7 @@ import { useStoreState } from 'store/hooks';
 import { getCategoryColor } from 'shared/constants';
 
 const ExpensesCharts: React.FC = () => {
-  const { expenses, categorySum } = useStoreState(state => state.expensesList);
+  const { categorySum } = useStoreState(state => state.expensesList);
 
   const data = {
     labels: Object.keys(categorySum),

@@ -45,11 +45,10 @@ const updateExpenseModel: ExpenseDetailModel = {
       const expense = await expenseService.getExpense(payload);
       actions.fetchExpenseSuccess(expense);
     } catch (err) {
-      console.log(err, err.toString());
       actions.fetchExpenseFailure(err.toString());
+      throw err;
     }
   }),
-  // TODO cancel pending request
   reset: action(_ => ({ ...initialState }))
 };
 

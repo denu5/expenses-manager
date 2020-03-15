@@ -16,6 +16,7 @@ export interface UpdateExpenseModel extends UpdateExpenseState {
   updateExpenseFailure: Action<UpdateExpenseModel, string>;
   updateExpense: Thunk<UpdateExpenseModel, Expense, Injections>;
   onUpdateExpenseSuccess: ThunkOn<UpdateExpenseModel, void, StoreModel>;
+  reset: Action<UpdateExpenseModel>;
 }
 
 const initialState: UpdateExpenseState = {
@@ -46,6 +47,7 @@ const updateExpenseModel: UpdateExpenseModel = {
       actions.updateExpenseSuccess(updatedExpense);
     } catch (err) {
       actions.updateExpenseFailure(err.toString());
+      throw err;
     }
   }),
   onUpdateExpenseSuccess: thunkOn(
@@ -53,7 +55,8 @@ const updateExpenseModel: UpdateExpenseModel = {
     (actions, _, { getStoreActions, getState }) => {
       getStoreActions().expensesList.fetchExpenses();
     }
-  )
+  ),
+  reset: action(_ => ({ ...initialState }))
 };
 
 export default updateExpenseModel;

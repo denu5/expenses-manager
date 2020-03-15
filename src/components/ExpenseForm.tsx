@@ -10,22 +10,34 @@ import {
   Row,
   Col
 } from 'antd';
-import { fromExpenseToFormData, fromFormDataToExpense } from '../shared/utils';
 import {
   DATE_FORMAT,
   TIME_FORMAT,
   CURRENCIES,
   CATEGORIES,
-  DEFAULT_CURRENCY
-} from '../shared/constants';
+  DEFAULT_CURRENCY,
+  DEFAULT_CATEGORY
+} from 'shared/constants';
 
-export const ExpenseForm = ({
+import { fromExpenseToFormData, fromFormDataToExpense } from 'shared/utils';
+import { Expense, BaseExpense } from 'model/expensesListModel';
+import { FormInstance } from 'antd/lib/form';
+
+interface Props {
+  onSubmit: (expense: BaseExpense) => void;
+  expense?: Expense;
+  formRef: FormInstance;
+  disabled: boolean;
+}
+export const ExpenseForm: React.FC<Props> = ({
   onSubmit,
   formRef,
   expense,
   disabled = false
-}: any) => {
-  const formData = expense ? fromExpenseToFormData(expense) : {};
+}) => {
+  const formData = expense
+    ? fromExpenseToFormData(expense)
+    : { currency: DEFAULT_CURRENCY, category: DEFAULT_CATEGORY };
 
   const onFinish = (formData: any) => {
     onSubmit(fromFormDataToExpense(formData));
@@ -101,11 +113,7 @@ export const ExpenseForm = ({
             name="currency"
             rules={[{ required: true, message: 'Currency is required' }]}
           >
-            <Select
-              disabled={disabled}
-              defaultValue={expense?.currency || 'EUR'}
-              style={{ minWidth: 100 }}
-            >
+            <Select disabled={disabled} style={{ minWidth: 100 }}>
               {CURRENCIES.map(currency => (
                 <Select.Option key={currency} value={currency}>
                   {currency}

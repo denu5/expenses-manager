@@ -2,7 +2,7 @@ import React, { useState, useEffect, FC } from 'react';
 import { Form, Modal, Spin, Button, Row, Alert } from 'antd';
 import { useStoreState, useStoreActions } from 'store/hooks';
 
-import { Expense } from 'model/expensesListModel';
+import { BaseExpense } from 'model/expensesListModel';
 import ExpenseForm from 'components/ExpenseForm';
 
 interface Props {
@@ -12,8 +12,12 @@ interface Props {
 
 const DetailModal: FC<Props> = ({ id, afterClose }) => {
   const { fetchExpense, reset } = useStoreActions(state => state.expenseDetail);
-  const { updateExpense } = useStoreActions(state => state.updateExpense);
-  const { deleteExpense } = useStoreActions(state => state.deleteExpense);
+  const { updateExpense, reset: resetUpdate } = useStoreActions(
+    state => state.updateExpense
+  );
+  const { deleteExpense, reset: resetDelete } = useStoreActions(
+    state => state.deleteExpense
+  );
 
   const {
     isLoading: isFetchLoading,
@@ -21,34 +25,34 @@ const DetailModal: FC<Props> = ({ id, afterClose }) => {
     error: fetchError
   } = useStoreState(state => state.expenseDetail);
 
-  const { isLoading: isUpdateLoading } = useStoreState(
+  const { isLoading: isUpdateLoading, error: updateError } = useStoreState(
     state => state.updateExpense
   );
 
-  const { isLoading: isDeleteLoading } = useStoreState(
+  const { isLoading: isDeleteLoading, error: deleteError } = useStoreState(
     state => state.deleteExpense
   );
 
   const [form] = Form.useForm();
   const [isVisible, setIsVisible] = useState(true);
 
-  useEffect(() => {
-    fetchExpense(id);
-    return () => {
-      reset();
-    };
-  }, [id, fetchExpense, reset]);
-
-  const onSaveUpdate = (editedExpense: Expense) => {
-    if (expense) {
-      editedExpense.id = expense.id;
-      updateExpense(editedExpense).then(() => hide());
+  const onSaveUpdate = async (editedExpense: BaseExpense) => {
+    if (!expense) return;
+    try {
+      await updateExpense({ ...{ id }, ...editedExpense });
+      hide();
+    } catch (err) {
+      console.error(err);
     }
   };
 
-  const handleDelete = () => {
-    if (expense) {
-      deleteExpense(expense).then(() => hide());
+  const handleDelete = async () => {
+    if (!expense) return;
+    try {
+      await deleteExpense(expense);
+      hide();
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -56,16 +60,21 @@ const DetailModal: FC<Props> = ({ id, afterClose }) => {
     form.submit();
   };
 
-  const handleCancel = () => {
-    hide();
-  };
-
   const hide = () => {
     setIsVisible(false);
+    reset();
+    resetUpdate();
+    resetDelete();
   };
 
+  useEffect(() => {
+    fetchExpense(id);
+  }, [id, fetchExpense]);
+
+  const hasError = () => !!(fetchError || updateError || deleteError);
+
   const footer =
-    isFetchLoading || fetchError
+    isFetchLoading || hasError()
       ? null
       : [
           <Button
@@ -76,7 +85,7 @@ const DetailModal: FC<Props> = ({ id, afterClose }) => {
           >
             Delete
           </Button>,
-          <Button key="back" onClick={handleCancel}>
+          <Button key="back" onClick={hide}>
             Discard
           </Button>,
           <Button
@@ -97,7 +106,7 @@ const DetailModal: FC<Props> = ({ id, afterClose }) => {
       afterClose={afterClose}
       destroyOnClose={true}
       closable={true}
-      onCancel={handleCancel}
+      onCancel={hide}
       footer={footer}
     >
       <Row justify="space-around" align="middle">
@@ -109,10 +118,33 @@ const DetailModal: FC<Props> = ({ id, afterClose }) => {
       </Row>
 
       {fetchError && (
-        <Alert message="Error" description={fetchError} type="error" showIcon />
+        <Alert
+          message="Loading Error"
+          description={fetchError}
+          type="error"
+          showIcon
+        />
       )}
 
-      {expense && (
+      {deleteError && (
+        <Alert
+          message="Delete Error"
+          description={deleteError}
+          type="error"
+          showIcon
+        />
+      )}
+
+      {updateError && (
+        <Alert
+          message="Update Error"
+          description={updateError}
+          type="error"
+          showIcon
+        />
+      )}
+
+      {expense && !hasError() && (
         <ExpenseForm
           onSubmit={onSaveUpdate}
           formRef={form}

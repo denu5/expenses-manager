@@ -12,7 +12,6 @@ import {
 } from 'easy-peasy';
 import { Injections } from 'store';
 import { StoreModel } from 'model';
-import { DEFAULT_CURRENCY } from 'shared/constants';
 
 export interface BaseExpense {
   timestamp: number;
@@ -104,7 +103,8 @@ const expensesListModel: ExpensesListModel = {
     }
   }),
   onDeleteExpenseSuccess: actionOn(
-    (actions, storeActions) => storeActions.deleteExpense.deleteExpenseSuccess,
+    (actions, storeActions) =>
+      storeActions.deleteExpense.deleteExpense.startType,
     (state, { payload }) => {
       state.expenses = state.expenses.filter(i => i.id !== payload.id);
     }

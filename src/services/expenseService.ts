@@ -1,10 +1,9 @@
 import axios from 'axios';
-import { Expense } from 'model/expensesListModel';
+import { Expense, BaseExpense } from 'model/expensesListModel';
 import { API } from 'shared/constants';
 
 const httpClient = axios.create({ baseURL: API.BASE });
 
-console.log(API.BASE);
 interface GetExpensesParams {
   _sort: string;
   _order: 'asc' | 'desc';
@@ -35,7 +34,7 @@ export async function getExpense(id: number): Promise<Expense> {
   return data;
 }
 
-export async function createExpense(expense: Expense): Promise<Expense> {
+export async function createExpense(expense: BaseExpense): Promise<Expense> {
   const { data } = await httpClient.post<Expense>(`${API.EXPENSES}`, {
     ...expense
   });
