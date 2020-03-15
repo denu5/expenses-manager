@@ -2,6 +2,10 @@ import { createStore } from 'easy-peasy';
 import model from 'model';
 import * as expenseService from 'services/expenseService';
 
+import { createLogger } from 'redux-logger';
+
+const logger = createLogger();
+
 export interface Injections {
   expenseService: typeof expenseService;
 }
@@ -9,7 +13,8 @@ export interface Injections {
 const store = createStore(model, {
   injections: {
     expenseService
-  }
+  },
+  middleware: [logger]
 });
 
 // Wrapping dev only code like this normally gets stripped out by bundlers
