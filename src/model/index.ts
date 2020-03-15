@@ -5,16 +5,15 @@ import createExpenseModel, { CreateExpenseModel } from './createExpenseModel';
 import deleteExpenseModel, { DeleteExpenseModel } from './deleteExpenseModel';
 import updateExpenseModel, { UpdateExpenseModel } from './updateExpenseModel';
 
-import notificationsModel, { NotificationsModel } from './notificationsModel';
+import activityLogsModel, { ActivityLogsModel } from './activityLogsModel';
 
 export interface StoreModel {
   expensesList: ExpensesListModel;
   expenseDetail: ExpenseDetailModel;
-
   createExpense: CreateExpenseModel;
   deleteExpense: DeleteExpenseModel;
   updateExpense: UpdateExpenseModel;
-  notifications: NotificationsModel;
+  activityLogs: ActivityLogsModel;
 }
 
 const storeModel: StoreModel = {
@@ -23,7 +22,7 @@ const storeModel: StoreModel = {
   createExpense: createExpenseModel,
   deleteExpense: deleteExpenseModel,
   updateExpense: updateExpenseModel,
-  notifications: notificationsModel
+  activityLogs: activityLogsModel
 };
 
 export default storeModel;

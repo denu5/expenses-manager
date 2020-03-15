@@ -10,9 +10,13 @@ import DetailModal from 'features/DetailModal';
 
 import ExpensesListControl from 'features/ExpensesListControl';
 import ExpensesCharts from 'features/ExpensesCharts';
+import ActivityLogsModal from 'features/ActivityLogsModal';
 
 function App() {
   const [isCreateModalVisible, setCreateModalVisible] = useState(false);
+  const [isActivityLogsModalVisible, setActivityLogsModalVisible] = useState(
+    false
+  );
 
   const [detailId, setDetailId] = useState<number>();
 
@@ -28,8 +32,11 @@ function App() {
             title="Expenses Manager"
             ghost={false}
             extra={[
+              <Button key="1" onClick={() => setActivityLogsModalVisible(true)}>
+                Activity Logs
+              </Button>,
               <Button
-                key="1"
+                key="2"
                 type="primary"
                 onClick={() => setCreateModalVisible(true)}
               >
@@ -56,6 +63,14 @@ function App() {
 
       {detailId && (
         <DetailModal id={detailId} afterClose={afterDetailModalClose} />
+      )}
+
+      {isActivityLogsModalVisible && (
+        <ActivityLogsModal
+          afterClose={() => {
+            setActivityLogsModalVisible(false);
+          }}
+        />
       )}
     </>
   );

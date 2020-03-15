@@ -43,7 +43,7 @@ const updateExpenseModel: ExpenseDetailModel = {
     try {
       actions.fetchExpenseStart();
       const expense = await expenseService.getExpense(payload);
-      actions.fetchExpenseSuccess(expense);
+      return actions.fetchExpenseSuccess(expense);
     } catch (err) {
       actions.fetchExpenseFailure(err.toString());
       throw err;
