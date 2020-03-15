@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import './App.css';
 
 import { Layout, PageHeader, Button } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
 
 import ExpensesList from 'features/ExpensesList';
 import CreateExpenseModal from 'features/CreateExpenseModal';
 import DetailModal from 'features/DetailModal';
 
-import { PlusOutlined } from '@ant-design/icons';
 import ExpensesListControl from 'features/ExpensesListControl';
 import ExpensesCharts from 'features/ExpensesCharts';
 
