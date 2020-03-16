@@ -1,5 +1,5 @@
 import React, { useState, FC } from 'react';
-import { Form, Modal } from 'antd';
+import { Form, Modal, Alert } from 'antd';
 
 import { useStoreActions, useStoreState } from 'store/hooks';
 import { BaseExpense } from 'model/expensesListModel';
@@ -12,7 +12,7 @@ interface Props {
 
 const CreateExpenseModal: FC<Props> = ({ afterClose }) => {
   const { createExpense } = useStoreActions(state => state.createExpense);
-  const { isLoading } = useStoreState(state => state.createExpense);
+  const { isLoading, error } = useStoreState(state => state.createExpense);
 
   const [form] = Form.useForm();
   const [isVisible, setIsVisible] = useState(true);
@@ -47,6 +47,15 @@ const CreateExpenseModal: FC<Props> = ({ afterClose }) => {
       okText="Create"
       cancelText="Discard"
     >
+      {error && (
+        <Alert
+          message="Saving Error"
+          description={error}
+          type="error"
+          showIcon
+          closable
+        />
+      )}
       <ExpenseForm onSubmit={onSubmit} disabled={isLoading} formRef={form} />
     </Modal>
   );

@@ -1,5 +1,5 @@
 import React from 'react';
-import { List } from 'antd';
+import { List, Typography } from 'antd';
 
 import CurrencyFormat from './CurrencyFormat';
 import CategoryIcon from './CategoryIcon';
@@ -32,7 +32,9 @@ const ExpensesItemList: React.FC<Props> = ({
             title={item.recipient}
             description={<DateTimeFormat timestamp={item.timestamp} />}
           />
-          <CurrencyFormat currency={item.currency} quantity={item.amount} />
+          <Typography.Text strong>
+            <CurrencyFormat currency={item.currency} quantity={item.amount} />
+          </Typography.Text>
         </List.Item>
       )}
     />

@@ -42,8 +42,9 @@ const createExpenseModel: CreateExpenseModel = {
     const { expenseService } = injections;
     try {
       actions.createExpenseStart();
-      const expenses = await expenseService.createExpense(payload);
-      actions.createExpenseSuccess(expenses);
+      const expense = await expenseService.createExpense(payload);
+      actions.createExpenseSuccess(expense);
+      return expense;
     } catch (err) {
       actions.createExpenseFailure(err.toString());
       throw err;
