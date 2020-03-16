@@ -1,5 +1,13 @@
 ## expenses-manager demo
 
+## Setup
+
+You need to have Node.js and npm installed.
+1. Clone this repository or download zip.
+2. Install dependencies: `npm install`.
+3. Run mock-backend development: `npm run start:server`
+4. Run client in development mode: `npm start`
+
 ## Includes
 
 - react v. 16
@@ -8,17 +16,9 @@
 - axios
 - ant.design v. 3
 - charts.js
-
 - json-server mock api
 
-## Setup
 
-You need to have Node.js and npm installed.
-
-1. Clone this repository or download zip.
-2. Install dependencies: `npm install`.
-3. Run mock-backend development: `npm run start:server`
-4. Run client in development mode: `npm start`
 
 ## Features
 
