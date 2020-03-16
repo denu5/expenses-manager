@@ -7,6 +7,7 @@ You need to have Node.js and npm installed.
 2. Install dependencies: `npm install`.
 3. Run the mock backend: `npm run start:server`
 4. In a new terminal: run the client in development mode: `npm start`
+5. Open client in the browser:  http://localhost:3000
 
 ## Includes
 
